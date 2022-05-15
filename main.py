@@ -59,6 +59,11 @@ def read_point(point_id: int, db: Session = Depends(get_db)):
     return db_point
 
 
+@app.delete("/points/{point_id}")
+def delete_point(point_id: int, db: Session = Depends(get_db)):
+    return crud.delete_point(db, point_id)
+
+
 @app.post("/places/", response_model=schemas.Place)
 def create_place(place: schemas.PlaceCreate, db: Session = Depends(get_db)):
     db_place = crud.get_place_by_lat_lng(db, place.lat, place.lng)
@@ -79,3 +84,8 @@ def read_place(place_id: int, db: Session = Depends(get_db)):
     if db_place is None:
         raise HTTPException(status_code=404, detail="Place not found")
     return db_place
+
+
+@app.delete("/places/{place_id}")
+def delete_place(place_id: int, db: Session = Depends(get_db)):
+    return crud.delete_place(db, place_id)
