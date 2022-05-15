@@ -29,6 +29,13 @@ def get_point_by_lat_lng(db: Session, lat: float, lng: float):
         .first()
 
 
+def delete_point(db: Session, point_id):
+    point_to_remove = get_point(db, point_id)
+    db.delete(point_to_remove)
+    db.commit()
+    return {'ok': True}
+
+
 def get_points(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Point).offset(skip).limit(limit).all()
 
@@ -70,6 +77,13 @@ def get_place_by_lat_lng(db: Session, lat: float, lng: float):
         .filter(models.Place.lat == lat)\
         .filter(models.Place.lng == lng)\
         .first()
+
+
+def delete_place(db: Session, place_id: int):
+    place_to_remove = get_place(db, place_id)
+    db.delete(place_to_remove)
+    db.commit()
+    return {'ok': True}
 
 
 def get_places(db: Session, skip: int = 0, limit: int = 100):
